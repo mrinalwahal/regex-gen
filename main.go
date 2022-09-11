@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"math/rand"
@@ -18,22 +17,16 @@ var maxRepititions = 32
 func main() {
 
 	//	Parse the regex argument.
-	exp, err := syntax.Parse(os.Args[2], syntax.Perl)
+	exp, err := syntax.Parse(os.Args[1], syntax.Perl)
 	if err != nil {
 		panic(err)
 	}
 
-	//	Parse iteration requirement from flags.
-	n := flag.Int("n", 1, "Number of outputs to generate per expression.")
-
 	var b bytes.Buffer
 
-	for i := 0; i < *n; i++ {
-		rand.Seed(time.Now().UnixNano())
-		if err := run(&b, exp); err != nil {
-			panic(err)
-		}
-		b.WriteString("\n")
+	rand.Seed(time.Now().UnixNano())
+	if err := run(&b, exp); err != nil {
+		panic(err)
 	}
 
 	fmt.Println(b.String())
