@@ -17,7 +17,7 @@ go build -o app
 ### Usage
 
 ```
-./app foo(-(boo|bar|woo|quack))
+./app "foo(-(boo|bar|woo|quack))"
 ```
 
 ### Characters Not Supported
