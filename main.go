@@ -16,20 +16,26 @@ var maxRepititions = 32
 
 func main() {
 
-	//	Parse the regex argument.
-	exp, err := syntax.Parse(os.Args[1], syntax.Perl)
+	writer, err := execute(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
 
+	fmt.Println(writer.String())
+}
+
+func execute(expression string) (*bytes.Buffer, error) {
+
 	var b bytes.Buffer
 
-	rand.Seed(time.Now().UnixNano())
-	if err := run(&b, exp); err != nil {
-		panic(err)
+	//	Parse the regex argument.
+	exp, err := syntax.Parse(expression, syntax.Perl)
+	if err != nil {
+		return &b, err
 	}
 
-	fmt.Println(b.String())
+	rand.Seed(time.Now().UnixNano())
+	return &b, run(&b, exp)
 }
 
 func run(writer *bytes.Buffer, expression *syntax.Regexp) (err error) {
